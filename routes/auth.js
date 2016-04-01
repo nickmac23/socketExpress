@@ -45,7 +45,7 @@ router.post('/login', function(req, res, next) {
             });
             res.redirect('/');
         } else {
-            res.redirect('/users/login');
+            res.redirect('/login');
         }
     });
 });

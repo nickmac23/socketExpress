@@ -13,5 +13,9 @@ router.get('/signup', function(req, res, next) {
 
   res.render('public/signup');
 });
+router.get('/logout', function(req, res, next) {
+  res.clearCookie('userID');
+  res.redirect('/')
+});
 
 module.exports = router;

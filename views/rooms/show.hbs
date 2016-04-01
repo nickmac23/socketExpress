@@ -1,1 +1,15 @@
-<h1>{{roomName}}</h1>
+<div class='room'>
+
+  <h1>{{roomName}}</h1>
+  <ul id="messages"></ul>
+  <form id='msg' action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+  </form>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script type="text/javascript">
+var socket = io();///add room {{id}}
+</script>
+<script type="text/javascript" src='/javascripts/client.js'></script>

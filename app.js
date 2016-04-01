@@ -1,3 +1,4 @@
+require('dotenv').load();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -6,7 +7,7 @@ var knex = require('./db/knexs');
 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-require('dotenv').load();
+
 const Users = function() { return knex('users') };
 
 var routes = require('./routes/public');

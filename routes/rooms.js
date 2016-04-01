@@ -44,7 +44,10 @@ router.post('/:roomName/delete', function (req, res, next) {
 })
 
 router.get('/:roomName', function (req, res, next) {
-  res.render('rooms/show', {roomName: req.params.roomName })
+  Rooms().where({name: req.params.roomName}).first().then(function(room){
+    res.render('rooms/show', {roomName: req.params.roomName, roomID: room.id})
+
+  })
 })
 
 module.exports = router;

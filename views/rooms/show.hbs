@@ -12,12 +12,22 @@
 <script type="text/javascript" src='/javascripts/client.js'></script>
 <script type="text/javascript">
 var socket = io();///add room {{id}}
+if (true) {
+
+}
+socket.emit('self', {roomID: '{{roomID}}'})
 $('#msg').submit(function(){
-  socket.emit('dog', { room: '{{roomName}}', message: $('#m').val()});
+  socket.emit('dog', {user: '{{user.id}}', room: '{{roomName}}', roomID: '{{roomID}}', message: $('#m').val()});
   $('#m').val('');
   return false;
 });
 socket.on('{{roomName}}', function(msg){
+  console.log(msg);
   $('#messages').append($('<li>').text(msg.message));
+});
+socket.on('self', function(message){
+  message.forEach(function(msg){
+    $('#messages').append($('<li>').text(msg.message));
+  })
 });
 </script>

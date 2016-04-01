@@ -1,9 +1,9 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
-const knex = require('../db/knexs');
 const bcrypt = require('bcrypt');
 const flash = require('flash');
+const knex = require('../db/knexs');
 const Users = function() { return knex('users') };
 
 router.post('/signup', function(req, res, next) {

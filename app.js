@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 
 
 
-var routes = require('./routes/index');
+var routes = require('./routes/public');
 var users = require('./routes/users');
 var rooms = require('./routes/rooms');
 

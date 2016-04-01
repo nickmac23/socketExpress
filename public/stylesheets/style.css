@@ -6,3 +6,59 @@
 .room #messages { list-style-type: none; margin: 0; padding: 0; }
 .room #messages li { padding: 5px 10px; }
 .room #messages li:nth-child(odd) { background: #eee; }
+.rooms-list li form {
+  display:inline-block;
+}
+
+.rooms-list ul {
+  list-style: none;
+  padding-left:none;
+}
+
+.rooms-list li {
+  padding-bottom: 20px;
+}
+
+.fa-close {
+  border: none;
+  background-color: white;
+}
+
+
+img.bg {
+  /* Set rules to fill background */
+  min-height: 100%;
+  min-width: 1024px;
+
+  /* Set up proportionate scaling */
+  width: 100%;
+  height: auto;
+
+  /* Set up positioning */
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (max-width: 1024px) { /* Specific to this particular image */
+  img.bg {
+    left: 50%;
+    margin-left: -512px;   /* 50% */
+  }
+}
+
+.loginpage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: white;
+  background-color: rgba(2, 3, 4, 0.51);
+  font-size: 30px;
+}
+
+nav.navbar.navbar-default{
+  margin-bottom: 0;
+}

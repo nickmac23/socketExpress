@@ -3,6 +3,7 @@ var router = express.Router();
 var io = require('../lib/io')
 const knex = require('../db/knexs');
 const Rooms = function() { return knex('rooms') };
+const Messages = function() { return knex('messages') };
 
 router.get('/', function (req, res, next) {
   Rooms().then(function(rooms){
@@ -34,8 +35,10 @@ router.post('/', function(req, res, next) {
 router.post('/:roomName/delete', function (req, res, next) {
   Rooms().where({name: req.params.roomName}).first().then(function(room){
     if(room.usersId === res.user.id){
-      Rooms().where({name: req.params.roomName}).first().del().then( function () {
-        res.redirect('/rooms')
+      Messages().where({roomId: room.id}).del().then(function(){
+        Rooms().where({name: req.params.roomName}).first().del().then( function () {
+          res.redirect('/rooms')
+        })
       })
     }else{
       res.redirect('/rooms')

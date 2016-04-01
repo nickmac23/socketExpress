@@ -1,20 +1,22 @@
-<form class="form-horizontal" action='/rooms' method='post'>
-    <legend>Add Room</legend>
-    <div class="form-group">
-      <label for="room" class="col-lg-2 control-label">Room</label>
-      <div class="col-lg-4">
-        <input name='room' type="room" class="form-control" id="room" placeholder="Room Name">
+<div class='rooms-list'>
+  <form class="form-horizontal" action='/rooms' method='post'>
+      <legend>Add Room</legend>
+      <div class="form-group">
+        <label for="room" class="col-lg-2 control-label">Room</label>
+        <div class="col-lg-4">
+          <input name='room' type="room" class="form-control" id="room" placeholder="Room Name">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </div>
-  </form>
-<ul>
-  {{#rooms}}
-    <li>
-      {{name}} 
-      {{#if canDelete}}<form action="/rooms/{{name}}/delete" method="post">
-      <button type='submit'>Delete</button>
-    </form>{{/if}}
-  </li>
-  {{/rooms}}
-</ul>
+    </form>
+  <ul>
+    {{#rooms}}
+      <li>
+        <a href="/rooms/{{name}}">{{name}}</a>
+        {{#if canDelete}}<form action="/rooms/{{name}}/delete" method="post">
+        <button type='submit' class="fa fa-close"></button>
+      </form>{{/if}}
+    </li>
+    {{/rooms}}
+  </ul>
+</div>

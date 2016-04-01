@@ -7,7 +7,5 @@ var dog = 'dog';
     return false;
   });
   socket.on(dog, function(msg){
-    console.log(msg.room);
-    console.log(msg.message);
-    $('#messages').append($('<li>').text(msg));
+    $('#messages').append($('<li>').text(msg.message));
   });

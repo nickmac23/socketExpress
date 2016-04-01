@@ -9,7 +9,15 @@
 
 <script src="/socket.io/socket.io.js"></script>
 
+<script type="text/javascript" src='/javascripts/client.js'></script>
 <script type="text/javascript">
 var socket = io();///add room {{id}}
+$('#msg').submit(function(){
+  socket.emit('dog', { room: '{{roomName}}', message: $('#m').val()});
+  $('#m').val('');
+  return false;
+});
+socket.on('{{roomName}}', function(msg){
+  $('#messages').append($('<li>').text(msg.message));
+});
 </script>
-<script type="text/javascript" src='/javascripts/client.js'></script>

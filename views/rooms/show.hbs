@@ -1,5 +1,10 @@
 <div class='room'>
 
+  <aside class="users-list">
+    <h5>Users Present: <span class='count'></span></h5>
+    <ul>
+    </ul>
+  </aside>
   <h1>{{roomName}}</h1>
   <ul id="messages"></ul>
   <form id='msg' action="">
@@ -15,14 +20,24 @@ var socket = io();///add room {{id}}
 if (true) {
 
 }
-socket.emit('self', {roomID: '{{roomID}}'})
+socket.emit('self', {roomID: '{{roomID}}', roomName: decodeURI('{{roomName}}')})
 $('#msg').submit(function(){
-  socket.emit('dog', {user: '{{user.id}}', userName:'{{user.name}}', room: '{{roomName}}', roomID: '{{roomID}}', message: $('#m').val()});
+  socket.emit('dog', {roomID: '{{roomID}}', message: $('#m').val()});
   $('#m').val('');
   return false;
 });
 socket.on('{{roomName}}', function(msg){
-  $('#messages').append($('<li>').html('<h4>' + msg.userName + ':  </h4> ' + msg.message));
+  if(msg.messageType === "usersUpdate"){
+    $('.users-list .count').text(msg.currentState.numPresent);
+    var users = msg.currentState.users;
+    $('.users-list ul').empty();
+    for(var user in users){
+      user = users[user];
+      $('.users-list ul').append('<li>' + user.name + '</li>');
+    };
+  }else{
+    $('#messages').prepend($('<li>').html('<h4>' + msg.userName + ':  </h4> ' + msg.message));
+  }
 });
 socket.on('self', function(message){
   message.forEach(function(msg){

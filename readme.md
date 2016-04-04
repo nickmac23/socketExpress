@@ -8,4 +8,6 @@ echo SECRET=$(node -e "require('crypto').random
 Bytes(48, function(ex, buf) { console.log(buf.toString('hex')) });") >> .env
 
 echo \*.env >> .gitignore
+
+echo "ENVIRONMENT=development" >> .gitignore
 '''

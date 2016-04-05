@@ -41,6 +41,7 @@ app.use(cookieSession({
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){
+  console.log(req.session.userID);
   Users().where('id', req.session.userID).first().then(function(user){
     res.user = user;
     res.locals.user = user;

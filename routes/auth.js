@@ -1,10 +1,60 @@
 'use strict';
 const express = require('express');
 const router = express.Router();
+
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const cookieSession = require('cookie-session');
+
 const bcrypt = require('bcrypt');
 const flash = require('flash');
 const knex = require('../db/knexs');
 const Users = function() { return knex('users') };
+
+router.use(cookieSession({
+  name: 'session',
+  keys: [
+    process.env.SESSION_KEY1,
+    process.env.SESSION_KEY2,
+    process.env.SESSION_KEY3
+  ]
+}))
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: process.env.HOST + "/auth/google/callback"
+},
+function(accessToken, refreshToken, profile, done) {
+  console.log(profile);
+
+  return done(null, {displayName: profile.displayName, gender: profile.gender,
+                   profileImageURL: profile._json.image.url, photos: profile.photos,
+                   url:profile._json.image.url});
+}
+));
+
+passport.serializeUser(function(user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function(obj, cb) {
+  cb(null, obj);
+});
+
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+router.get('/google', passport.authenticate('google', {scope: ['profile']}));
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home and add current user key to database.
+    console.log(req.user);
+    res.redirect('/');
+  });
 
 router.post('/signup', function(req, res, next) {
     req.body.email = req.body.email.toLowerCase();

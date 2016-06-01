@@ -100,10 +100,8 @@ router.post('/signup', function(req, res, next) {
                 name: req.body.name,
                 email: req.body.email,
                 password: hash,
-            }).then(function(){
-              return Users().where('email', req.body.email).first().then(function(user){
-                req.session.userID = user.id;
-              })
+            }).returning('*').then(function(returnedUser){
+              req.session.userID = returnedUser[0].id;
             }).then(function(){
               res.redirect('/');
             });

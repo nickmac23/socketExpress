@@ -60,15 +60,16 @@ router.get('/google/callback',
     Users().where({email: req.user.email.toLowerCase()}).first().then(function(user){
       var toUpdate = {};
 
-      if(user && !user.google_id) toUpdate.google_id = req.user.googleId;
-      if(user && !user.image_url) toUpdate.image_url = req.user.imageUrl;
-      if(Object.keys(toUpdate).length === 0){
-        req.session.userID = user.id;
-        return res.redirect('/');
-      }
-
       if(user){
         console.log('in update');
+        console.log("user: ", user);
+
+        if(!user.google_id) toUpdate.google_id = req.user.googleId;
+        if(!user.image_url) toUpdate.image_url = req.user.imageUrl;
+        if(Object.keys(toUpdate).length === 0){
+          req.session.userID = user.id;
+          return res.redirect('/');
+        }
         Users().update(toUpdate).where({id: user.id}).then(function(){
           req.session.userID = user.id;
           return res.redirect('/');
@@ -79,7 +80,8 @@ router.get('/google/callback',
                         name: req.user.displayName,
                         google_id: req.user.google_id,
                         image_url: req.user.imageUrl
-                      }).then(function(){
+                      }).returning("*").then(function(user){
+                        user = user[0];
                         req.session.userID = user.id;
                         res.redirect('/');
                       })

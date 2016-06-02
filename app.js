@@ -1,11 +1,14 @@
-require('dotenv').load();
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var knex = require('./db/knexs');
+var passport = require('passport');
+var GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 var cookieParser = require('cookie-parser');
+var cookieSession = require('cookie-session');
+
 var bodyParser = require('body-parser');
 const Users = function() { return knex('users') };
 
@@ -26,10 +29,20 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.SECRET));
+app.use(cookieSession({
+  name: 'session',
+  keys: [
+    process.env.SESSION_KEY1,
+    process.env.SESSION_KEY2,
+    process.env.SESSION_KEY3
+  ]
+}));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next){
-  Users().where('id', req.signedCookies.userID).first().then(function(user){
+  console.log(req.session.userID);
+  Users().where('id', req.session.userID).first().then(function(user){
     res.user = user;
     res.locals.user = user;
     next();

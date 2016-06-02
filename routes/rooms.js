@@ -13,21 +13,21 @@ router.get('/', function (req, res, next) {
       })
       res.render('rooms/list', {rooms: rooms})
   })
-})
+});
 
 router.post('/', function(req, res, next) {
   req.body.room = req.body.room.toLowerCase();
-  if(!/^\w+$/.test(req.body.room)) return res.redirect('/rooms/');
+  if(!/^[\w\s]+$/.test(req.body.room)) return res.redirect('/rooms/');
   Rooms().where({name: req.body.room}).first().then(function(room){
     if (!room) {
       Rooms().insert({name: req.body.room, usersId: res.user.id}).then( function (){
         res.redirect('/rooms/' + req.body.room)
       })
     } else {
-      res.redirect( '/rooms/')
+      res.redirect( '/rooms/' + room.name)
     }
   })
-})
+});
 
 
 router.post('/:roomName/delete', function (req, res, next) {
@@ -42,14 +42,14 @@ router.post('/:roomName/delete', function (req, res, next) {
       res.redirect('/rooms')
     }
   })
-})
+});
 
 router.get('/:roomName', function (req, res, next) {
   Rooms().where({name: req.params.roomName}).first().then(function(room){
-    res.cookie('roomName', req.params.roomName, {signed: true})
+    req.session.roomName = req.params.roomName;
     console.log(req.params.roomName);
     res.render('rooms/show', {roomName: req.params.roomName, roomID: room.id})
   })
-})
+});
 
 module.exports = router;
